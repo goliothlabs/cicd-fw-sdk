@@ -10,6 +10,8 @@ manifest:
       revision: main
       url: https://github.com/golioth/golioth-firmware-sdk.git
       submodules: true
+      import:
+        path-prefix: deps
 
   self:
     path: app
