@@ -11,7 +11,10 @@ manifest:
       url: https://github.com/golioth/golioth-firmware-sdk.git
       submodules: true
       import:
+        file: west.yml
         path-prefix: deps
+        name-allowlist:
+          - zephyr
 
   self:
     path: app
