@@ -18,6 +18,7 @@ manifest:
           - mbedtls
           - mcuboot
           - zcbor
+          - hal_espressif
 
   self:
     path: app
