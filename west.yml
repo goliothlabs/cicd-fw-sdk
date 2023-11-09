@@ -10,6 +10,14 @@ manifest:
       revision: main
       url: https://github.com/golioth/golioth-firmware-sdk.git
       submodules: true
+      import:
+        file: west-zephyr.yml
+        path-prefix: deps
+        name-allowlist:
+          - zephyr
+          - mbedtls
+          - mcuboot
+          - zcbor
 
   self:
     path: app
