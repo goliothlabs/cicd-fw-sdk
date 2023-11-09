@@ -1,0 +1,12 @@
+# Copyright (c) 2022-2023 Golioth, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+manifest:
+  version: 0.8
+
+  projects:
+    - name: golioth
+      path: modules/lib/golioth-firmware-sdk
+      revision: main
+      url: https://github.com/golioth/golioth-firmware-sdk.git
+      submodules: true
