@@ -15,8 +15,10 @@ jobs:
       version: ${{ github.ref_name }}
 
   deploy-artifact:
+    needs: [create-artifact]
+
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
