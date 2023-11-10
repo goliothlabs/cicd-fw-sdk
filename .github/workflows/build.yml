@@ -1,33 +1,21 @@
 # Copyright (c) 2023 Golioth, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-name: Build Zephyr binary
+name: Build & Deploy to Golioth
 
 on:
+  push:
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Artifact Version.'
-        required: true
-        default: 'v0.0.0'
-        type: string
-
-  workflow_call:
-    inputs:
-        version:
-          description: 'Artifact Version.'
-          required: true
-          default: 'v0.0.0'
-          type: string
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     container: golioth/golioth-zephyr-base:0.16.3-SDK-v0
-
-    env:
-      ZEPHYR_SDK_INSTALL_DIR: /opt/toolchains/zephyr-sdk-0.16.3
 
     steps:
       - name: Setup West workspace
@@ -53,3 +41,33 @@ jobs:
           name: build_artifacts_${{ github.run_id }}
           path: |
             build/zephyr/golioth_${{ inputs.version }}.bin
+
+  deploy:
+    if: ${{ github.event_name != 'pull_request' }}
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+        - name: Checkout repo
+          uses: actions/checkout@v4
+        
+        - name: Setup Golioth CLI
+          uses: golioth/setup-goliothctl@main
+          with:
+            apiKey: ${{ secrets.APIKEY }}
+            projectId: ${{ secrets.PROJECTID }}
+        
+        - name: List devices
+          run: goliothctl device list
+          
+        # - name: Download artifact
+        #   uses: actions/download-artifact@v3
+        #   with:
+        #     name: build_artifacts_${{ github.run_id }}
+
+        # - name: Upload artifacts to release
+        #   run: gh release upload --clobber ${{ inputs.version }} golioth_${{ inputs.version }}.bin
+        #   env:
+        #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
