@@ -1,15 +1,24 @@
 # Copyright (c) 2023 Golioth, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-name: Build & Deploy to Golioth
+name: Build firmware images
 
 on:
-  push:
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Artifact Version.'
+        required: true
+        default: 'v0.0.0'
+        type: string
+    
+  workflow_call:
+    inputs:
+      version:
+        description: 'Artifact Version.'
+        required: true
+        default: 'v0.0.0'
+        type: string
 
 jobs:
   build:
@@ -42,32 +51,32 @@ jobs:
           path: |
             build/zephyr/golioth_${{ inputs.version }}.bin
 
-  deploy:
-    if: ${{ github.event_name != 'pull_request' }}
+#   deploy:
+#     if: ${{ github.event_name != 'pull_request' }}
 
-    needs: build
+#     needs: build
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    steps:
-        - name: Checkout repo
-          uses: actions/checkout@v4
+#     steps:
+#         - name: Checkout repo
+#           uses: actions/checkout@v4
         
-        - name: Setup Golioth CLI
-          uses: golioth/setup-goliothctl@main
-          with:
-            apiKey: ${{ secrets.APIKEY }}
-            projectId: ${{ secrets.PROJECTID }}
+#         - name: Setup Golioth CLI
+#           uses: golioth/setup-goliothctl@main
+#           with:
+#             apiKey: ${{ secrets.APIKEY }}
+#             projectId: ${{ secrets.PROJECTID }}
         
-        - name: List devices
-          run: goliothctl device list
+#         - name: List devices
+#           run: goliothctl device list
           
-        # - name: Download artifact
-        #   uses: actions/download-artifact@v3
-        #   with:
-        #     name: build_artifacts_${{ github.run_id }}
+#         # - name: Download artifact
+#         #   uses: actions/download-artifact@v3
+#         #   with:
+#         #     name: build_artifacts_${{ github.run_id }}
 
-        # - name: Upload artifacts to release
-        #   run: gh release upload --clobber ${{ inputs.version }} golioth_${{ inputs.version }}.bin
-        #   env:
-        #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         # - name: Upload artifacts to release
+#         #   run: gh release upload --clobber ${{ inputs.version }} golioth_${{ inputs.version }}.bin
+#         #   env:
+#         #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
