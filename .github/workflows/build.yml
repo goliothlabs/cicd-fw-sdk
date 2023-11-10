@@ -44,7 +44,7 @@ jobs:
 
       - name: Prepare artifacts
         run: |
-          mv build/zephyr/zephyr.signed.bin build/zephyr/golioth_${{ inputs.version }}.bin
+          mv build/zephyr/zephyr.bin build/zephyr/golioth_${{ inputs.version }}.bin
 
       # Run IDs are unique per repo but are reused on re-runs
       - name: Save artifact
