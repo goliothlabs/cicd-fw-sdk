@@ -5,8 +5,20 @@ name: Build Zephyr binary
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Artifact Version.'
+        required: true
+        default: 'v0.0.0'
+        type: string
 
   workflow_call:
+    inputs:
+        version:
+          description: 'Artifact Version.'
+          required: true
+          default: 'v0.0.0'
+          type: string
 
 jobs:
   build:
@@ -28,30 +40,16 @@ jobs:
 
       - name: Build with West
         run: |
-          west build -p -b esp32_devkitc_wrover app/
+          west build -p -b esp32_devkitc_wrover app/ -- -DCONFIG_GOLIOTH_SAMPLE_FW_VERSION=\"${{ inputs.version }}\"
 
-    #   - name: Create filename prefix
-    #     if: inputs.ARTIFACT == true
-    #     run: echo "PREFIX=golioth-${{ github.event.repository.name }}-${{ inputs.BOARD }}" >> "$GITHUB_ENV"
+      - name: Prepare artifacts
+        run: |
+          mv build/zephyr/zephyr.signed.bin build/zephyr/golioth_${{ inputs.version }}.bin
 
-    #   - name: Generate short SHA
-    #     if: inputs.ARTIFACT == true
-    #     uses: benjlevesque/short-sha@v2.2
-
-    #   - name: Prepare artifacts
-    #     if: inputs.ARTIFACT == true
-    #     run: |
-    #       cd build/zephyr
-    #       mkdir -p artifacts
-    #       mv merged.hex     ./artifacts/${{ env.PREFIX }}_full_${{ env.SHA }}.hex
-    #       mv app_update.bin ./artifacts/${{ env.PREFIX }}_update_${{ env.SHA }}.bin
-    #       mv zephyr.elf     ./artifacts/${{ env.PREFIX }}_${{ env.SHA }}.elf
-
-    #   # Run IDs are unique per repo but are reused on re-runs
-    #   - name: Save artifact
-    #     if: inputs.ARTIFACT == true
-    #     uses: actions/upload-artifact@v3
-    #     with:
-    #       name: build_artifacts_${{ github.run_id }}
-    #       path: |
-    #         build/zephyr/artifacts/*
+      # Run IDs are unique per repo but are reused on re-runs
+      - name: Save artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build_artifacts_${{ github.run_id }}
+          path: |
+            build/zephyr/golioth_${{ inputs.version }}.bin
