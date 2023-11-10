@@ -1,0 +1,31 @@
+# Copyright (c) 2023 Golioth, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+name: Build & deploy to Golioth
+
+on:
+  push:
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+
+jobs:
+  create-artifact:
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ github.ref_name }}
+
+  deploy-artifact:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Golioth CLI
+        uses: golioth/setup-goliothctl@main
+        with:
+          apiKey: ${{ secrets.APIKEY }}
+          projectId: ${{ secrets.PROJECTID }}
+
+      - name: List devices
+        run: goliothctl device list
