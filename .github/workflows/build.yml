@@ -35,6 +35,12 @@ jobs:
           pip3 install -r deps/zephyr/scripts/requirements-base.txt
           west blobs fetch hal_espressif
 
+      - name: Troubleshooting
+        run: |
+          pwd
+          ls
+          ls ~
+
       - name: Build with West
         run: |
           west build -p -b esp32_devkitc_wrover app/ -- -DCONFIG_GOLIOTH_SAMPLE_FW_VERSION=\"${{ inputs.version }}\"
