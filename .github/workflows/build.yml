@@ -37,7 +37,7 @@ jobs:
 
       - name: Troubleshooting
         run: |
-          ls ~/.cmake/packages
+          ls ~/.cmake/packages/Zephyr
 
       # - name: Build with West
       #   run: |
