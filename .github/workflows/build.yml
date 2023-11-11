@@ -39,7 +39,7 @@ jobs:
         run: |
           pwd
           ls -a
-          ls .cmake
+          ls ~/.cmake
 
       - name: Build with West
         run: |
