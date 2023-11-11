@@ -50,33 +50,3 @@ jobs:
           name: build_artifacts_${{ github.run_id }}
           path: |
             build/zephyr/golioth_${{ inputs.version }}.bin
-
-#   deploy:
-#     if: ${{ github.event_name != 'pull_request' }}
-
-#     needs: build
-
-#     runs-on: ubuntu-latest
-
-#     steps:
-#         - name: Checkout repo
-#           uses: actions/checkout@v4
-        
-#         - name: Setup Golioth CLI
-#           uses: golioth/setup-goliothctl@main
-#           with:
-#             apiKey: ${{ secrets.APIKEY }}
-#             projectId: ${{ secrets.PROJECTID }}
-        
-#         - name: List devices
-#           run: goliothctl device list
-          
-#         # - name: Download artifact
-#         #   uses: actions/download-artifact@v3
-#         #   with:
-#         #     name: build_artifacts_${{ github.run_id }}
-
-#         # - name: Upload artifacts to release
-#         #   run: gh release upload --clobber ${{ inputs.version }} golioth_${{ inputs.version }}.bin
-#         #   env:
-#         #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
