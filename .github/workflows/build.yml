@@ -37,22 +37,20 @@ jobs:
 
       - name: Troubleshooting
         run: |
-          pwd
-          ls -a
-          ls ~/.cmake
+          ls ~/.cmake/packages
 
-      - name: Build with West
-        run: |
-          west build -p -b esp32_devkitc_wrover app/ -- -DCONFIG_GOLIOTH_SAMPLE_FW_VERSION=\"${{ inputs.version }}\"
+      # - name: Build with West
+      #   run: |
+      #     west build -p -b esp32_devkitc_wrover app/ -- -DCONFIG_GOLIOTH_SAMPLE_FW_VERSION=\"${{ inputs.version }}\"
 
-      - name: Prepare artifacts
-        run: |
-          mv build/zephyr/zephyr.bin build/zephyr/golioth_${{ inputs.version }}.bin
+      # - name: Prepare artifacts
+      #   run: |
+      #     mv build/zephyr/zephyr.bin build/zephyr/golioth_${{ inputs.version }}.bin
 
-      # Run IDs are unique per repo but are reused on re-runs
-      - name: Save artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: build_artifacts_${{ github.run_id }}
-          path: |
-            build/zephyr/golioth_${{ inputs.version }}.bin
+      # # Run IDs are unique per repo but are reused on re-runs
+      # - name: Save artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: build_artifacts_${{ github.run_id }}
+      #     path: |
+      #       build/zephyr/golioth_${{ inputs.version }}.bin
