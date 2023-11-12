@@ -24,7 +24,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container: golioth/golioth-zephyr-base:0.16.1-SDK-v0
+    container: golioth/golioth-zephyr-base:0.16.3-SDK-v0
 
     steps:
       - name: Setup West workspace
