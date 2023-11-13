@@ -26,10 +26,10 @@ jobs:
 
     env:
       ZEPHYR_SDK_VERSION: 0.16.1
-      ZEPHYR_SDK_INSTALL_DIR: /opt/toolchains/zephyr-sdk-${{ github.env.ZEPHYR_SDK_VERSION }}
+      ZEPHYR_SDK_INSTALL_DIR: /opt/toolchains/zephyr-sdk-$ZEPHYR_SDK_VERSION
       ZEPHYR_SDK_TOOLCHAINS: "-t arm-zephyr-eabi"
       RUNNER_ARCH: x86_64
-      SDK_FILENAME: zephyr-sdk-${{ github.env.ZEPHYR_SDK_VERSION }}_linux-${{ github.env.RUNNER_ARCH}}_minimal.tar.xz
+      SDK_FILENAME: zephyr-sdk-$ZEPHYR_SDK_VERSION_linux-$RUNNER_ARCH_minimal.tar.xz
 
     steps:
       - name: Zephyr OS dependencies
@@ -47,10 +47,10 @@ jobs:
 
       - name: Install Zephyr SDK
         run: |
-          wget -q "https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${{ github.env.ZEPHYR_SDK_VERSION }}/${{ github.env.SDK_FILENAME }}" \
-          && mkdir -p ${{ github.env.ZEPHYR_SDK_INSTALL_DIR}}  \
-          && tar -xvf ${{ github.env.SDK_FILENAME }} -C ${{ github.env.ZEPHYR_SDK_INSTALL_DIR}} --strip-components=1 \
-          && ${{ github.env.ZEPHYR_SDK_INSTALL_DIR}}/setup.sh -c ${{ github.env.ZEPHYR_SDK_TOOLCHAINS }}
+          wget -q "https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v$ZEPHYR_SDK_VERSION/$SDK_FILENAME" \
+          && mkdir -p $ZEPHYR_SDK_INSTALL_DIR  \
+          && tar -xvf $SDK_FILENAME -C $ZEPHYR_SDK_INSTALL_DIR --strip-components=1 \
+          && $ZEPHYR_SDK_INSTALL_DIR/setup.sh -c $ZEPHYR_SDK_TOOLCHAINS
 
       - name: Install West
         run: |
