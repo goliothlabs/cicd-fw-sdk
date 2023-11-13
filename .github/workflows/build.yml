@@ -26,11 +26,6 @@ jobs:
 
     container: golioth/golioth-zephyr-base:0.16.3-SDK-v0
 
-    steps:
-      - name: Troubleshooting
-        run: |
-          ls ~/.cmake
-
       - name: Setup West workspace
         run: |
           west init -m https://github.com/$GITHUB_REPOSITORY .
