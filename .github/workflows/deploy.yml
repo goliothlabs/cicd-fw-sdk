@@ -33,3 +33,12 @@ jobs:
 
       - name: List devices
         run: goliothctl device list
+
+      - name: Fetch build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build_artifact
+
+      - name: Confirm build artifact
+        run: |
+          ls -al
