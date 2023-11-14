@@ -29,9 +29,9 @@ jobs:
     steps:
       - name: Troubleshooting
         run: |
-          ls ~/.cmake
+          ls -la /root/.cmake
           cp -R /root/.cmake /github/home
-          ls ~/.cmake
+          ls -la ~/.cmake
 
       - name: Setup West workspace
         run: |
