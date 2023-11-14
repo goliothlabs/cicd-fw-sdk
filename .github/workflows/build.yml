@@ -43,10 +43,9 @@ jobs:
         run: |
           mv build/zephyr/zephyr.bin build/zephyr/golioth_${{ inputs.version }}.bin
 
-      # Run IDs are unique per repo but are reused on re-runs
       - name: Save artifact
         uses: actions/upload-artifact@v3
         with:
-          name: build_artifacts_${{ github.run_id }}
+          name: build_artifact
           path: |
             build/zephyr/golioth_${{ inputs.version }}.bin
