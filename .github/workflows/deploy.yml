@@ -13,14 +13,14 @@ on:
       version:
         description: 'Artifact Version.'
         required: true
-        default: 'v0.0.0'
+        default: '0.0.0'
         type: string
 
 jobs:
   create-artifact:
     uses: ./.github/workflows/build.yml
     with:
-      version: ${{ inputs.version }}
+      version: v${{ inputs.version }}
 
   deploy-artifact:
     needs: [create-artifact]
@@ -47,5 +47,5 @@ jobs:
 
       - name: Upload binary to Golioth (create artifact)
         run: |
-          goliothctl dfu artifact create esp-air-quality-monitor.bin --version ${{ steps.get_version.outputs.version-without-v }}
+          goliothctl dfu artifact create firmware.bin --version ${{ inputs.version }}
   
