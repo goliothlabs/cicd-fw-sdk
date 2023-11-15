@@ -4,17 +4,23 @@
 name: Deploy to Golioth
 
 on:
-  push:
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+  # push:
+  #   # Publish semver tags as releases.
+  #   tags: [ 'v*.*.*' ]
 
-  workflow_dispatch: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Artifact Version.'
+        required: true
+        default: 'v0.0.0'
+        type: string
 
 jobs:
   create-artifact:
     uses: ./.github/workflows/build.yml
     with:
-      version: ${{ github.ref_name }}
+      version: ${{ inputs.version }}
 
   deploy-artifact:
     needs: [create-artifact]
@@ -39,6 +45,7 @@ jobs:
         with:
           name: build_artifact
 
-      - name: Confirm build artifact
+      - name: Upload binary to Golioth (create artifact)
         run: |
-          ls -al
+          goliothctl dfu artifact create esp-air-quality-monitor.bin --version ${{ steps.get_version.outputs.version-without-v }}
+  
