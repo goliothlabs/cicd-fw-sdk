@@ -41,11 +41,11 @@ jobs:
 
       - name: Prepare artifacts
         run: |
-          mv build/zephyr/zephyr.bin build/zephyr/golioth_${{ inputs.version }}.bin
+          mv build/zephyr/zephyr.bin build/zephyr/firmware.bin
 
       - name: Save artifact
         uses: actions/upload-artifact@v3
         with:
           name: build_artifact
           path: |
-            build/zephyr/golioth_${{ inputs.version }}.bin
+            build/zephyr/firmware.bin
