@@ -15,6 +15,10 @@ on:
         required: true
         default: '0.0.0'
         type: string
+      blueprint:
+        description: 'Target blueprint'
+        required: false
+        type: string
 
 jobs:
   create-artifact:
@@ -37,9 +41,6 @@ jobs:
           apiKey: ${{ secrets.APIKEY }}
           projectId: ${{ secrets.PROJECTID }}
 
-      - name: List devices
-        run: goliothctl device list
-
       - name: Fetch build artifact
         uses: actions/download-artifact@v3
         with:
@@ -49,3 +50,6 @@ jobs:
         run: |
           goliothctl dfu artifact create firmware.bin --version ${{ inputs.version }}
   
+      - name: Create release in Golioth (OTA update)
+        run: |
+          goliothctl dfu release create --components main@${{ inputs.version }} --rollout true
